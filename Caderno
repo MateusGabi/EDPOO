@@ -1,0 +1,67 @@
+Data: 03/06/16
+
+Busca em AB
+
+private boolean search(Node<T> root, T value) {
+
+	if (root == null) return false;
+
+	if (root.value.equals(value)) return true;
+
+	if (search(root.left, value)) return true;
+
+	if (search(root.right, value)) return true;
+
+	return false;
+}
+
+
+public boolean search(T val) {
+	return busca(root, value);
+}
+
+Data: 20/05/16
+
+Tipo Abstrato de Dados
+
+Tipo de Dados x Estrutura de Dados x TAD
+
+int, float,      pilha com vetores,   ideias de pilha, fila
+String, char,    mapa, conjunto, etc   Fila, etc
+byte, boolean
+
+
+/* TAD em Java */
+
+INTERFACE Pilha {
+	
+	BOOLEAN vazia();
+	VOID empilhar();
+	Object desempilhar();
+	Object topo();
+
+}
+
+/* PILHA COM VETOR em Java */
+
+ABSTRACT CLASS PilhaVector IMPLEMENTS Pilha {
+	
+	Object[] vet;
+	int topo;
+
+	PilhaVetor(INT max) {
+		vet = new Object[max];
+		topo = -1;
+	}	
+
+	BOOLEAN vazia() {
+		return topo == -1;
+	}
+
+	ABSTRACT VOID mostrar();
+
+	.
+	.
+	.
+
+}
