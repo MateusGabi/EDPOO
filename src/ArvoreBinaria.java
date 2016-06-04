@@ -1,5 +1,7 @@
 import java.util.Random;
 
+import javax.swing.SingleSelectionModel;
+
 /**
  * Nó de uma árvore binária genérica.
  * 
@@ -7,7 +9,12 @@ import java.util.Random;
  * 
  */
 class No<T> {
-	/* Definir um nó */
+	public No(T val) {
+		this.info = val;
+	}
+	T info;
+	No<T> esq;
+	No<T> dir;
 }
 
 /**
@@ -127,13 +134,85 @@ public class ArvoreBinaria<T> {
 		// Exibe árvore no formato deitada.
 		System.out.println("Deitada:");
 		ab.exibirDeitada();
-
+		
 		// Exibe elementos da árvore em diferentes ordens.
 		System.out.print("Pre-ordem: ");
 		ab.exibirPreOrdem();
+		System.out.println();
 		System.out.print("Pos-ordem: ");
 		ab.exibirPosOrdem();
+		System.out.println();
 		System.out.print("Em-ordem: ");
 		ab.exibirEmOrdem();
+		System.out.println();
+		
+		int value = 9;
+		
+		boolean existe = ab.busca(9);
+		
+		System.out.println("Possui "+ value +"? "+existe);
+	}
+
+	public void exibirPreOrdem() {
+		printPreOrder(raiz);
+	}
+
+	private void printPreOrder(No<T> raiz) {
+		
+		if(raiz==null) return;
+		
+		System.out.print(raiz.info);
+		
+		printPreOrder(raiz.esq);
+		printPreOrder(raiz.dir);
+		
+	}
+
+	public void exibirPosOrdem() {
+		
+		printPosOrdem(raiz);
+		
+	}
+
+	private void printPosOrdem(No<T> raiz) {
+		if(raiz==null) return;
+				
+		printPreOrder(raiz.esq);
+		printPreOrder(raiz.dir);
+		
+		System.out.print(raiz.info);
+		
+	}
+
+	public void exibirEmOrdem() {
+		printEmOrdem(raiz);		
+	}
+
+	private void printEmOrdem(No<T> raiz) {
+		if(raiz==null) return;
+				
+		printPreOrder(raiz.esq);
+		
+		System.out.print(raiz.info);
+		
+		printPreOrder(raiz.dir);
+		
+	}
+	
+	public boolean busca(T val) {
+		return busca(raiz, val);
+	}
+
+	private boolean busca(No<T> root, T value) {
+		
+		if (root == null) return false;
+
+		if (root.info.equals(value)) return true;
+
+		if (busca(root.esq, value)) return true;
+
+		if (busca(root.dir, value)) return true;
+		
+		return false;
 	}
 }
