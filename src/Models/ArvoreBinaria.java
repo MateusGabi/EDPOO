@@ -1,9 +1,11 @@
+package Models;
+
 import java.util.Random;
 
 import javax.swing.SingleSelectionModel;
 
 /**
- * Nó de uma árvore binária genérica.
+ * NÃ³ de uma Ã¡rvore binÃ¡ria genÃ©rica.
  * 
  * @author eraldo
  * 
@@ -15,10 +17,11 @@ class No<T> {
 	T info;
 	No<T> esq;
 	No<T> dir;
+
 }
 
 /**
- * Árvore binária de números inteiros.
+ * Ã�rvore binÃ¡ria de nÃºmeros inteiros.
  * 
  * @author eraldo
  * 
@@ -26,38 +29,38 @@ class No<T> {
 public class ArvoreBinaria<T> {
 
 	/**
-	 * Generador de números aleatórios usado para inserção aleatória.
+	 * Generador de nÃºmeros aleatÃ³rios usado para inserÃ§Ã£o aleatÃ³ria.
 	 *
-	 * Obs.: Se precisar reproduzir uma árvore que causou um erro, passe um
-	 * número inteiro como parâmetro do construtor da classe 
-	 * <code>Random</code>. Experimente com diferentes valores até causar o
+	 * Obs.: Se precisar reproduzir uma Ã¡rvore que causou um erro, passe um
+	 * nÃºmero inteiro como parÃ¢metro do construtor da classe 
+	 * <code>Random</code>. Experimente com diferentes valores atÃ© causar o
 	 * erro novamente.
 	 */
 	private static Random rand = new Random();
 
 	/**
-	 * Nó raiz.
+	 * NÃ³ raiz.
 	 */
 	protected No<T> raiz;
 
 	/**
-	 * Cria uma árvore vazia.
+	 * Cria uma Ã¡rvore vazia.
 	 */
 	public ArvoreBinaria() {
 		raiz = null;
 	}
 
 	/**
-	 * Exibe árvore no formato deitada.
+	 * Exibe Ã¡rvore no formato deitada.
 	 */
 	public void exibirDeitada() {
 		if (raiz == null) {
-			// Árvore vazia.
+			// Ã�rvore vazia.
 			System.out.printf("%s\n", "<null>");
 			return;
 		}
 
-		// Exibe raiz e chama método recursivo para os seus dois filhos.
+		// Exibe raiz e chama mÃ©todo recursivo para os seus dois filhos.
 		exibirDeitada(raiz.dir, "", false);
 		System.out.printf("%s\n", raiz.info);
 		exibirDeitada(raiz.esq, "", true);
@@ -65,18 +68,18 @@ public class ArvoreBinaria<T> {
 	}
 
 	/**
-	 * Método recursivo que exibe árvore no formato deitada.
+	 * MÃ©todo recursivo que exibe Ã¡rvore no formato deitada.
 	 * 
 	 * @param n
-	 *            raiz da sub-árvore a ser exibida.
+	 *            raiz da sub-Ã¡rvore a ser exibida.
 	 * @param prefix
-	 *            nível do nó <code>n</code> na árvore original.
+	 *            nÃ­vel do nÃ³ <code>n</code> na Ã¡rvore original.
 	 */
 	private void exibirDeitada(No<T> n, String prefix, boolean filhoEsquerdo) {
 		if (n == null)
 			return;
 
-		// Imprime nó e sub-árvores.
+		// Imprime nÃ³ e sub-Ã¡rvores.
 		if (filhoEsquerdo) {
 			exibirDeitada(n.dir, prefix + "| ", false);
 			System.out.printf("%s%s\n", prefix + "|>", n.info);
@@ -89,8 +92,8 @@ public class ArvoreBinaria<T> {
 	}
 
 	/**
-	 * Insere o valor <code>val</code> na árvore. O local que este novo valor é
-	 * armazenado é aleatório.
+	 * Insere o valor <code>val</code> na Ã¡rvore. O local que este novo valor Ã©
+	 * armazenado Ã© aleatÃ³rio.
 	 * 
 	 * @param val
 	 */
@@ -119,6 +122,73 @@ public class ArvoreBinaria<T> {
 			}
 		}
 	}
+	
+	/**
+	 * Exibe os valores dos nós folhas da árvore.
+	 */
+	public void valuesOfLeafs() {
+		valuesOfLeafs(raiz);
+	}
+
+	private void valuesOfLeafs(No<T> root) {
+		if (root.esq == null && root.dir == null) {
+			System.out.print(" " + root.info);
+			return;
+		}
+
+		if (root.esq != null)
+			valuesOfLeafs(root.esq);
+
+		if (root.dir != null)
+			valuesOfLeafs(root.dir);
+	}
+
+	/**
+	 * Retorna a altura da árvore.
+	 * 
+	 * @return
+	 */
+	public int height() {
+		return height(0, raiz);
+	}
+
+	private int height(int i, No<T> root) {
+		if(root == null) return i;
+		
+		int esq = height(i+1, root.esq);
+		int dir = height(i+1, root.dir);
+		
+		return (esq > dir) ? esq : dir;
+		
+	}
+	
+	/**
+	 * Retorna o elemento do nómmais à esquerda da árvore
+	 * @return
+	 */
+	public T mostLeft() {
+		return mostLeft(raiz);
+	}
+	
+	private T mostLeft(No<T> root) {
+		if(root.esq == null) return root.info;
+		else
+			return mostLeft(root.esq);
+	}
+	
+	/**
+	 * Retorna o elemento do nómmais à direita da árvore
+	 * @return
+	 */
+	public T mostRight() {
+		return mostRight(raiz);
+	}
+	
+	private T mostRight(No<T> root) {
+		if(root.dir == null) return root.info;
+		else
+			return mostRight(root.dir);
+	}
 
 	/**
 	 * Programa teste.
@@ -126,16 +196,16 @@ public class ArvoreBinaria<T> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Cria uma árvore aleatória com os números 0, 1, ..., 9.
+		// Cria uma Ã¡rvore aleatÃ³ria com os nÃºmeros 0, 1, ..., 9.
 		ArvoreBinaria<Integer> ab = new ArvoreBinaria<>();
 		for (int i = 0; i < 10; ++i)
 			ab.insereAleatorio(i);
 
-		// Exibe árvore no formato deitada.
+		// Exibe Ã¡rvore no formato deitada.
 		System.out.println("Deitada:");
 		ab.exibirDeitada();
 		
-		// Exibe elementos da árvore em diferentes ordens.
+		// Exibe elementos da Ã¡rvore em diferentes ordens.
 		System.out.print("Pre-ordem: ");
 		ab.exibirPreOrdem();
 		System.out.println();
