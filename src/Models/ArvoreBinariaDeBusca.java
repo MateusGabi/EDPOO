@@ -2,7 +2,7 @@ package Models;
 
 public class ArvoreBinariaDeBusca<T extends Number> extends ArvoreBinaria<T> {
 	/**
-	 * TODO método de inserção
+	 *  mï¿½todo de inserï¿½ï¿½o
 	 * 
 	 * @param node
 	 */
@@ -40,17 +40,34 @@ public class ArvoreBinariaDeBusca<T extends Number> extends ArvoreBinaria<T> {
 	}
 
 	/**
-	 * TODO método de search
+	 * TODO mï¿½todo de search
 	 * 
 	 * @param value
 	 * @return
 	 */
 	public boolean search(T value) {
+		return search(raiz, value);
+	}
+	
+	private boolean search(No<T> node, T value){
+		if (node == null) {
+			return false;
+		}
+		if (node.info.doubleValue() == value.doubleValue()) {
+			return true;
+		}
+		else if (value.doubleValue() < node.info.doubleValue()) {
+			search(node.esq, value);
+		}
+		else if (value.doubleValue() > node.info.doubleValue()) {
+			search(node.dir, value);
+		}
+		
 		return false;
 	}
 
 	/**
-	 * TODO método de remove
+	 * TODO mï¿½todo de remove
 	 * 
 	 * @param value
 	 */
@@ -75,5 +92,7 @@ public class ArvoreBinariaDeBusca<T extends Number> extends ArvoreBinaria<T> {
 		ab.insert(13);
 
 		ab.exibirDeitada();
+		
+		System.out.println(ab.search(12));
 	}
 }
