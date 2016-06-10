@@ -57,10 +57,10 @@ public class ArvoreBinariaDeBusca<T extends Number> extends ArvoreBinaria<T> {
 			return true;
 		}
 		else if (value.doubleValue() < node.info.doubleValue()) {
-			search(node.esq, value);
+			return search(node.esq, value);
 		}
 		else if (value.doubleValue() > node.info.doubleValue()) {
-			search(node.dir, value);
+			return search(node.dir, value);
 		}
 		
 		return false;
@@ -90,9 +90,22 @@ public class ArvoreBinariaDeBusca<T extends Number> extends ArvoreBinaria<T> {
 		ab.insert(27);
 		ab.insert(3);
 		ab.insert(13);
+		ab.insert(143);;
+		ab.insert(75);
+		ab.insert(1123);
+		ab.insert(1432);
+		ab.insert(2423);
+		ab.insert(-1);
+		ab.insert(-215);
+		ab.insert(115);
+		ab.insert(-4);
+		ab.insert(237);
+		ab.insert(31);
+		ab.insert(132331);
 
 		ab.exibirDeitada();
 		
-		System.out.println(ab.search(12));
+		System.out.println(ab.search(12));		
+		System.out.println(ab.search(13));
 	}
 }
