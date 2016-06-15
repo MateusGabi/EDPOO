@@ -258,14 +258,14 @@ public class ArvoreBinaria<T> {
 		printEmOrdem(raiz);		
 	}
 
-	private void printEmOrdem(No<T> raiz) {
-		if(raiz==null) return;
+	private void printEmOrdem(No<T> node) {
+		if(node==null) return;
 				
-		printPreOrder(raiz.esq);
+		printPreOrder(node.esq);
 		
-		System.out.print(raiz.info);
+		System.out.println(node.info);
 		
-		printPreOrder(raiz.dir);
+		printPreOrder(node.dir);
 		
 	}
 	
