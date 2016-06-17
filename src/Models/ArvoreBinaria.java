@@ -1,27 +1,7 @@
-package Models;
-
 import java.util.Random;
 
-import javax.swing.SingleSelectionModel;
-
 /**
- * NÃ³ de uma Ã¡rvore binÃ¡ria genÃ©rica.
- * 
- * @author eraldo
- * 
- */
-class No<T> {
-	public No(T val) {
-		this.info = val;
-	}
-	T info;
-	No<T> esq;
-	No<T> dir;
-
-}
-
-/**
- * Ã�rvore binÃ¡ria de nÃºmeros inteiros.
+ * Árvore binária de números inteiros.
  * 
  * @author eraldo
  * 
@@ -29,71 +9,229 @@ class No<T> {
 public class ArvoreBinaria<T> {
 
 	/**
-	 * Generador de nÃºmeros aleatÃ³rios usado para inserÃ§Ã£o aleatÃ³ria.
-	 *
-	 * Obs.: Se precisar reproduzir uma Ã¡rvore que causou um erro, passe um
-	 * nÃºmero inteiro como parÃ¢metro do construtor da classe 
-	 * <code>Random</code>. Experimente com diferentes valores atÃ© causar o
-	 * erro novamente.
+	 * Generador de números aleatórios usado para inserção aleatória.
 	 */
 	private static Random rand = new Random();
 
 	/**
-	 * NÃ³ raiz.
+	 * Nó raiz.
 	 */
 	protected No<T> raiz;
 
 	/**
-	 * Cria uma Ã¡rvore vazia.
+	 * Cria uma árvore vazia.
 	 */
 	public ArvoreBinaria() {
 		raiz = null;
 	}
 
 	/**
-	 * Exibe Ã¡rvore no formato deitada.
+	 * Retorna o número de nós nesta árvore.
+	 * 
+	 * @return número de nós nesta árvore.
 	 */
-	public void exibirDeitada() {
-		if (raiz == null) {
-			// Ã�rvore vazia.
-			System.out.printf("%s\n", "<null>");
-			return;
-		}
+	public int tamanho() {
+		return tamanho(raiz);
+	}
 
-		// Exibe raiz e chama mÃ©todo recursivo para os seus dois filhos.
-		exibirDeitada(raiz.dir, "", false);
-		System.out.printf("%s\n", raiz.info);
-		exibirDeitada(raiz.esq, "", true);
+	/**
+	 * Função recursiva que retorna o número de nós na sub-árvore cuja raiz é o
+	 * nó dado <code>n</code>.
+	 * 
+	 * @return número de nós na sub-árvore cuja raiz é <code>n</code>.
+	 */
+	protected int tamanho(No<T> n) {
+		if (n == null)
+			return 0;
+		return 1 + tamanho(n.esq) + tamanho(n.dir);
+	}
+
+	/**
+	 * Retorna um vetor com os valores armazenados nesta árvore.
+	 * 
+	 * @return
+	 */
+	public Object[] toArray() {
+		Object[] vet = new Object[tamanho()];
+		toArray(raiz, vet, 0);
+		return vet;
+	}
+
+	/**
+	 * Método recursivo que preenche o sub-vetor <code>a[pos...]</code> com os
+	 * elementos na sub-árvore cuja raiz é <code>n</code>.
+	 * 
+	 * @param n
+	 *            nó raiz da sub-árvore cujos elementos devem ser copiados para
+	 *            o vetor.
+	 * @param vet
+	 *            vetor que receberá os elementos da árvore.
+	 * @param pos
+	 *            índice do vetor a partir de onde os elemento serão copiados.
+	 * @return a quantidade de elementos copiados para o vetor.
+	 */
+	private int toArray(No<T> n, Object[] vet, int pos) {
+		if (n == null)
+			return 0;
+		int tam = toArray(n.esq, vet, pos);
+		vet[pos + tam] = n.info;
+		tam += 1;
+		tam += toArray(n.dir, vet, pos + tam);
+		return tam;
+	}
+
+	/**
+	 * Exibe nós em pré-ordem.
+	 */
+	public void exibePreOrdem() {
+		exibePreOrdem(raiz);
 		System.out.println();
 	}
 
 	/**
-	 * MÃ©todo recursivo que exibe Ã¡rvore no formato deitada.
+	 * Exibe nós em pós-ordem.
+	 */
+	public void exibePosOrdem() {
+		exibePosOrdem(raiz);
+		System.out.println();
+	}
+
+	/**
+	 * Exibe nós em-ordem.
+	 */
+	public void exibeEmOrdem() {
+		exibeEmOrdem(raiz);
+		System.out.println();
+	}
+
+	/**
+	 * Método recursivo para exibir em pós-ordem a sub-árvore cuja raiz é
+	 * <code>n</code>.
 	 * 
 	 * @param n
-	 *            raiz da sub-Ã¡rvore a ser exibida.
-	 * @param prefix
-	 *            nÃ­vel do nÃ³ <code>n</code> na Ã¡rvore original.
+	 *            raiz da sub-árvore a ser exibida.
 	 */
-	private void exibirDeitada(No<T> n, String prefix, boolean filhoEsquerdo) {
+	private void exibePreOrdem(No<T> n) {
+		if (n == null)
+			return;
+		System.out.print(" " + n.info);
+		exibePreOrdem(n.esq);
+		exibePreOrdem(n.dir);
+	}
+
+	/**
+	 * Método recursivo para exibir a sub-árvore cuja raiz é <code>n</code> em
+	 * pós-ordem.
+	 * 
+	 * @param n
+	 *            raiz da sub-árvore a ser exibida.
+	 */
+	private void exibePosOrdem(No<T> n) {
+		if (n == null)
+			return;
+		exibePosOrdem(n.esq);
+		exibePosOrdem(n.dir);
+		System.out.print(" " + n.info);
+	}
+
+	/**
+	 * Método recursivo para exibir em-ordem a sub-árvore cuja raiz é
+	 * <code>n</code>.
+	 * 
+	 * @param n
+	 *            raiz da sub-árvore a ser exibida.
+	 */
+	private void exibeEmOrdem(No<T> n) {
+		if (n == null)
+			return;
+		exibeEmOrdem(n.esq);
+		System.out.print(" " + n.info);
+		exibeEmOrdem(n.dir);
+	}
+
+	/**
+	 * Exibe árvore no formato deitada.
+	 */
+	public void exibeDeitada() {
+		if (raiz == null) {
+			// Árvore vazia.
+			System.out.printf("%s\n", "<null>");
+			return;
+		}
+
+		// Exibe raiz e chama método recursivo para os seus dois filhos.
+		exibeDeitada(raiz.dir, "", false);
+		System.out.printf("%s\n", raiz);
+		exibeDeitada(raiz.esq, "", true);
+		System.out.println();
+	}
+
+	/**
+	 * Método recursivo que exibe árvore no formato deitada.
+	 * 
+	 * @param n
+	 *            raiz da sub-árvore a ser exibida.
+	 * @param prefix
+	 *            nível do nó <code>n</code> na árvore original.
+	 */
+	private void exibeDeitada(No<T> n, String prefix, boolean filhoEsquerdo) {
 		if (n == null)
 			return;
 
-		// Imprime nÃ³ e sub-Ã¡rvores.
+		// Imprime nó e sub-árvores.
 		if (filhoEsquerdo) {
-			exibirDeitada(n.dir, prefix + "| ", false);
-			System.out.printf("%s%s\n", prefix + "|>", n.info);
-			exibirDeitada(n.esq, prefix + "  ", true);
+			exibeDeitada(n.dir, prefix + "| ", false);
+			System.out.printf("%s%s\n", prefix + "|>", n);
+			exibeDeitada(n.esq, prefix + "  ", true);
 		} else {
-			exibirDeitada(n.dir, prefix + "  ", false);
-			System.out.printf("%s%s\n", prefix + "|>", n.info);
-			exibirDeitada(n.esq, prefix + "| ", true);
+			exibeDeitada(n.dir, prefix + "  ", false);
+			System.out.printf("%s%s\n", prefix + "|>", n);
+			exibeDeitada(n.esq, prefix + "| ", true);
 		}
 	}
 
 	/**
-	 * Insere o valor <code>val</code> na Ã¡rvore. O local que este novo valor Ã©
-	 * armazenado Ã© aleatÃ³rio.
+	 * Busca o valor dado <code>val</code> na árvore.
+	 * 
+	 * @param val
+	 *            valor a ser buscado (comparação é realizada pelo método
+	 *            <code>equals(...)</code>)
+	 * @return <code>true</code> caso o valor dado é encontrato na árvore, ou
+	 *         <code>false</code> caso contrário.
+	 */
+	public boolean busca(T val) {
+		return busca(raiz, val);
+	}
+
+	/**
+	 * Busca o valor dado <code>val</code> na sub-árvore cuja raiz é nó dado
+	 * <code>n</code>
+	 * 
+	 * @param n
+	 *            raiz da sub-árvore a ser buscada.
+	 * @param val
+	 *            valor a ser buscado.
+	 * @return <true> se o valor é encontrao, <code>falso</code> caso contrário.
+	 */
+	private boolean busca(No<T> n, T val) {
+		if (n == null)
+			return false;
+
+		if (n.info.equals(val))
+			return true;
+
+		if (busca(n.esq, val))
+			return true;
+
+		if (busca(n.dir, val))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Insere o valor <code>val</code> na árvore. O local que este novo valor é
+	 * armazenado é aleatório.
 	 * 
 	 * @param val
 	 */
@@ -122,167 +260,13 @@ public class ArvoreBinaria<T> {
 			}
 		}
 	}
-	
-	/**
-	 * Exibe os valores dos nós folhas da árvore.
-	 */
-	public void valuesOfLeafs() {
-		valuesOfLeafs(raiz);
-	}
-
-	private void valuesOfLeafs(No<T> root) {
-		if (root.esq == null && root.dir == null) {
-			System.out.print(" " + root.info);
-			return;
-		}
-
-		if (root.esq != null)
-			valuesOfLeafs(root.esq);
-
-		if (root.dir != null)
-			valuesOfLeafs(root.dir);
-	}
 
 	/**
-	 * Retorna a altura da árvore.
+	 * Retorna <code>true</code> caso a árvore seja vazia.
 	 * 
 	 * @return
 	 */
-	public int height() {
-		return height(0, raiz);
-	}
-
-	private int height(int i, No<T> root) {
-		if(root == null) return i;
-		
-		int esq = height(i+1, root.esq);
-		int dir = height(i+1, root.dir);
-		
-		return (esq > dir) ? esq : dir;
-		
-	}
-	
-	/**
-	 * Retorna o elemento do nómmais à esquerda da árvore
-	 * @return
-	 */
-	public T mostLeft() {
-		return mostLeft(raiz);
-	}
-	
-	private T mostLeft(No<T> root) {
-		if(root.esq == null) return root.info;
-		else
-			return mostLeft(root.esq);
-	}
-	
-	/**
-	 * Retorna o elemento do nómmais à direita da árvore
-	 * @return
-	 */
-	public T mostRight() {
-		return mostRight(raiz);
-	}
-	
-	private T mostRight(No<T> root) {
-		if(root.dir == null) return root.info;
-		else
-			return mostRight(root.dir);
-	}
-
-	/**
-	 * Programa teste.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// Cria uma Ã¡rvore aleatÃ³ria com os nÃºmeros 0, 1, ..., 9.
-		ArvoreBinaria<Integer> ab = new ArvoreBinaria<>();
-		for (int i = 0; i < 10; ++i)
-			ab.insereAleatorio(i);
-
-		// Exibe Ã¡rvore no formato deitada.
-		System.out.println("Deitada:");
-		ab.exibirDeitada();
-		
-		// Exibe elementos da Ã¡rvore em diferentes ordens.
-		System.out.print("Pre-ordem: ");
-		ab.exibirPreOrdem();
-		System.out.println();
-		System.out.print("Pos-ordem: ");
-		ab.exibirPosOrdem();
-		System.out.println();
-		System.out.print("Em-ordem: ");
-		ab.exibirEmOrdem();
-		System.out.println();
-		
-		int value = 9;
-		
-		boolean existe = ab.busca(9);
-		
-		System.out.println("Possui "+ value +"? "+existe);
-	}
-
-	public void exibirPreOrdem() {
-		printPreOrder(raiz);
-	}
-
-	private void printPreOrder(No<T> raiz) {
-		
-		if(raiz==null) return;
-		
-		System.out.print(raiz.info);
-		
-		printPreOrder(raiz.esq);
-		printPreOrder(raiz.dir);
-		
-	}
-
-	public void exibirPosOrdem() {
-		
-		printPosOrdem(raiz);
-		
-	}
-
-	private void printPosOrdem(No<T> raiz) {
-		if(raiz==null) return;
-				
-		printPreOrder(raiz.esq);
-		printPreOrder(raiz.dir);
-		
-		System.out.print(raiz.info);
-		
-	}
-
-	public void exibirEmOrdem() {
-		printEmOrdem(raiz);		
-	}
-
-	private void printEmOrdem(No<T> node) {
-		if(node==null) return;
-				
-		printPreOrder(node.esq);
-		
-		System.out.println(node.info);
-		
-		printPreOrder(node.dir);
-		
-	}
-	
-	public boolean busca(T val) {
-		return busca(raiz, val);
-	}
-
-	private boolean busca(No<T> root, T value) {
-		
-		if (root == null) return false;
-
-		if (root.info.equals(value)) return true;
-
-		if (busca(root.esq, value)) return true;
-
-		if (busca(root.dir, value)) return true;
-		
-		return false;
+	public boolean vazia() {
+		return raiz == null;
 	}
 }
