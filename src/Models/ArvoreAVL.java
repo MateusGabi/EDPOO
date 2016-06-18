@@ -69,13 +69,43 @@ public class ArvoreAVL<T extends Comparable<T>> extends ArvoreBinariaBusca<T> {
 		if (val.compareTo(n.info) < 0) {
 			if (n.esq == null) {
 				n.esq = new NoAVL<T>(val);
-				return n.fb++ != 0;
+				
+				++n.fb;
+				
+				return n.fb != 0;
+//				return false;
 			}
+			if (insere(n.getEsq(), n, true, val)) {
+				n.fb++;
+				if (n.fb > 1) {
+					if (n.getEsq().fb < 0)
+						rotEsq(n.getEsq(), n, true);
+					rotDir(n, pai, filhoEsq);
+					return false;
+				}
+				return n.fb != 0;
+			}
+			return false;
+		} else {
+			if (n.dir == null) {
+				n.dir = new NoAVL<T>(val);
+				--n.fb;
+				System.out.println("oww" + val);
+//				return n.fb != 0;
+				return true;
+			}
+			if (insere(n.getDir(), n, false, val)) {
+				n.fb--;
+				if (n.fb < -1) {
+					if (n.getDir().fb > 0)
+						rotDir(n.getDir(), n, false);
+					rotEsq(n, pai, filhoEsq);
+					return true;
+				}
+				return n.fb != 0;
+			}
+			return true;
 		}
-		else if(val.compareTo(n.info) > 0) {
-			
-		}
-		return false;
 	}
 
 	/**
@@ -89,7 +119,22 @@ public class ArvoreAVL<T extends Comparable<T>> extends ArvoreBinariaBusca<T> {
 	 *            indica se <code>n</code> é filho esquerdo de <code>pai</code>.
 	 */
 	private void rotDir(NoAVL<T> x, NoAVL<T> pai, boolean filhoEsq) {
-		// TODO: IMPLEMENTAR!
+		NoAVL<T> z = x.getEsq();
+		x.esq = z.getDir();
+		z.dir = x;
+		x.fb--;
+		if (z.fb > 0)
+			x.fb -= z.fb;
+		z.fb -= 1;
+		if (x.fb < 0)
+			z.fb += x.fb;
+		if (pai == null)
+			raiz = z;
+		else if (filhoEsq) {
+			pai.esq = z;
+		} else {
+			pai.dir = z;
+		}
 	}
 
 	/**
@@ -103,7 +148,22 @@ public class ArvoreAVL<T extends Comparable<T>> extends ArvoreBinariaBusca<T> {
 	 *            indica se <code>n</code> é filho esquerdo de <code>pai</code>.
 	 */
 	private void rotEsq(NoAVL<T> x, NoAVL<T> pai, boolean filhoEsq) {
-		// TODO: IMPLEMENTAR!
+		NoAVL<T> z = x.getDir();
+		x.dir = z.getEsq();
+		z.esq = x;
+		x.fb++;
+		if (z.fb < 0)
+			x.fb -= z.fb;
+		if (x.fb > 0)
+			z.fb += x.fb;
+		if (pai == null)
+			raiz = z;
+		else if (filhoEsq) {
+			pai.esq = z;
+		} else {
+			pai.dir = z;
+		}
+
 	}
 
 	/**
@@ -145,15 +205,12 @@ public class ArvoreAVL<T extends Comparable<T>> extends ArvoreBinariaBusca<T> {
 			return Integer.MIN_VALUE;
 
 		if (hEsq - hDir != n.fb) {
-			System.err.printf("Erro no nó %s! FB=%d mas deveria ser %d\n", n,
-					n.fb, hEsq - hDir);
+			System.err.printf("Erro no nó %s! FB=%d mas deveria ser %d\n", n, n.fb, hEsq - hDir);
 			return Integer.MIN_VALUE;
 		}
 
 		if (n.fb < -1 || n.fb > 1) {
-			System.err.printf(
-					"Erro no nó %s! FB=%d (fora do intervalo válido)!\n", n,
-					n.fb);
+			System.err.printf("Erro no nó %s! FB=%d (fora do intervalo válido)!\n", n, n.fb);
 			return Integer.MIN_VALUE;
 		}
 

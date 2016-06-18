@@ -1,4 +1,8 @@
+package Test;
+
 import java.util.Random;
+
+import Models.ArvoreAVL;
 
 public class TesteArvoreAVL {
 
