@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -64,7 +66,16 @@ public class ArvoreAVL<T extends Comparable<T>> extends ArvoreBinariaBusca<T> {
 	 *         contrário.
 	 */
 	private boolean insere(NoAVL<T> n, NoAVL<T> pai, boolean filhoEsq, T val) {
-		// TODO: IMPLEMENTAR!
+		if (val.compareTo(n.info) < 0) {
+			if (n.esq == null) {
+				n.esq = new NoAVL<T>(val);
+				return n.fb++ != 0;
+			}
+		}
+		else if(val.compareTo(n.info) > 0) {
+			
+		}
+		return false;
 	}
 
 	/**

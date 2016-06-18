@@ -1,3 +1,5 @@
+package Models;
+
 /**
  * Nó de uma árvore binária genérica.
  * 

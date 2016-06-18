@@ -1,3 +1,5 @@
+package Models;
+
 /**
  * Nó de uma árvore AVL. Além da informação armazenada no nó, das sub-árvores
  * esquerda e direita, esta classe possui um atributo adicional <code>fb</code>

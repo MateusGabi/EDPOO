@@ -1,3 +1,5 @@
+package Models;
+
 /**
  * Árvore binária de busca de tipo genérico.
  * 
