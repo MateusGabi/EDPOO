@@ -220,4 +220,43 @@ public class ArvoreAVL<T extends Comparable<T>> extends ArvoreBinariaBusca<T> {
 		// Retorna a altura da sub-Ã¡rvore cuja raiz Ã© o nÃ³ n.
 		return 1 + Math.max(hEsq, hDir);
 	}
+	
+	public void atualizaCaminho(Deque<NoAVL<T>> caminho, boolean removeuDaEsquerda) {
+		while(caminho.size() > 0) {
+			NoAVL<T> n = caminho.pop();
+			NoAVL<T> pai = caminho.peekFirst();
+			
+			boolean nEsquerdaDePai = false;
+			
+			if(pai!=null)
+				nEsquerdaDePai = (pai.esq == n);
+			
+			if (removeuDaEsquerda) {
+				n.fb--;
+				
+				if (n.fb == -1) {
+					return;
+				}
+				
+				if (n.fb == -2) {
+					if (n.getDir().fb > 0) {
+						rotDir(n.getDir(), n, false);
+						rotEsq(n, pai, nEsquerdaDePai);
+					}
+					else if (n.getDir().fb < 0) {
+						rotEsq(n, pai, nEsquerdaDePai);
+					}
+					else {
+						rotEsq(n, pai, nEsquerdaDePai);
+						return;
+					}
+				}
+			}
+			else {
+				// TODO CUZAOO
+			}
+			
+			removeuDaEsquerda = nEsquerdaDePai;
+		}
+	}
 }
